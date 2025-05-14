@@ -1,2 +1,14 @@
-/app/.env
+# 가상환경
+venv/
+mysite/
+__pycache__/
+
+# 환경 변수 파일
+app/.env
+
+# SQLite DB 파일
+app/*.sqlite3
+
+# Python 컴파일 파일
+app/app/*.pyc
 app/app/key.py
