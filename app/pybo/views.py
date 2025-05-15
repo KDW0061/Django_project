@@ -11,8 +11,10 @@ from openai import OpenAIError, RateLimitError, AuthenticationError
 # API 키 설정 (환경변수에서 받아오기)
 openai.api_key = settings.OPENAI_API_KEY
 
+
 def index(request):
-    return HttpResponse("Hello, Django! 😊 여기는 홈페이지입니다.")
+    return render(request, 'templates/index.html')
+
 
 def ai_chat(request):
     user_input = request.GET.get('q', '')
