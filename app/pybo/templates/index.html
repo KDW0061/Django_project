@@ -35,6 +35,8 @@
       </div>
     </div>
 
+
+    <!--학력-->
     <div class="section" id="education-section" style="display: none;">
       <div class="section-header" style="display: flex; justify-content: space-between; align-items: center;">
         <div class="section-title">학력</div>
@@ -44,8 +46,10 @@
     </div>
     <div id="education-form-template" style="display: none;">
       <div class="education-entry">
+        <!-- 저장 결과를 보여줄 영역 -->
+        <div class="education-summary" style="display: none;"></div>
         <input type="text" placeholder="학교명" class="text_input">
-        <select class="text_input">
+        <select class="text_input" id="education-select">
           <option>졸업</option>
           <option>재학중</option>
           <option>휴학중</option>
@@ -57,13 +61,11 @@
         <div class="form-buttons">
           <button onclick="removeEducationForm(this)" class="cencle_save_btn">삭제</button>
           <button onclick="saveEducation(this)" class="cencle_save_btn">저장</button>
-      
-          <!-- 저장 결과를 보여줄 영역 -->
-          <div class="education-summary" style="display: none;"></div>
         </div>
       </div>
     </div>
 
+    <!--경력-->
     <div class="section" id="career-section" style="display: none;">
       <div class="section-header" style="display: flex; justify-content: space-between; align-items: center;">
         <div class="section-title">경력</div>
@@ -86,6 +88,8 @@
     </div>
 
 
+
+    <!--스킬-->
     <div class="section" id="skill-section" style="display: none;">
       <div class="section-header" style="display: flex; justify-content: space-between; align-items: center;">
         <div class="section-title">스킬</div>
@@ -125,6 +129,8 @@
       </div>
     </div>
 
+
+    <!--경험/활동/교육-->
     <div class="section" id="experience-section" style="display: none;">
       <div class="section-header" style="display: flex; justify-content: space-between; align-items: center;">
         <div class="section-title">경험/활동/교육</div>
@@ -145,6 +151,8 @@
       </div>
     </div>
 
+
+    <!--자격/어학/수상-->
     <div class="section" id="certificate-section" style="display: none;">
       <div class="section-header" style="display: flex; justify-content: space-between; align-items: center;">
         <div class="section-title">자격/어학/수상</div>
@@ -187,7 +195,6 @@
           <input type="text" class="datepicker" placeholder="수상/공모일" class="text_input">
           <input type="text" placeholder="수여/주최기관" class="text_input">
         </div>
-
         <div class="form-buttons">
           <button onclick="cancelcertificate()" class="cencle_save_btn">취소</button>
           <button onclick="savecertificate()" class="cencle_save_btn">저장</button>
@@ -195,6 +202,8 @@
       </div>
     </div>
 
+
+    <!--취업우대사항-->
     <div class="section" id="preference-section" style="display: none;">
       <div class="section-header" style="display: flex; justify-content: space-between; align-items: center;">
         <div class="section-title">취업우대사항</div>
@@ -239,6 +248,8 @@
       </div>
     </div>
 
+
+    <!--포트폴리오-->
     <div class="section" id="portfolio-section" style="display: none;">
       <div class="section-header" style="display: flex; justify-content: space-between; align-items: center;">
         <div class="section-title">포트폴리오</div>
@@ -256,6 +267,8 @@
       </div>
     </div>
 
+
+    <!--경력기술서-->
     <div class="section" id="career-description-section" style="display: none;">
       <div class="section-header" style="display: flex; justify-content: space-between; align-items: center;">
         <div class="section-title">경력기술서</div>
@@ -271,6 +284,8 @@
       </div>
     </div>
 
+
+    <!--자기소개서-->
     <div class="section" id="introduction-section" style="display: none;">
       <div class="section-header" style="display: flex; justify-content: space-between; align-items: center;">
         <div class="section-title">자기소개서</div>
@@ -316,12 +331,13 @@
       </div>
     </div>
     <script>
+      //토글 
       function toggleSection(sectionId) {
         const section = document.getElementById(sectionId);
         section.style.display = section.style.display === 'none' ? 'block' : 'none';
       }
 
-      //학력
+      //학력 추가
       let educationFormCount = 0;
       const MAX_EDUCATION_FORMS = 10;
 
@@ -336,7 +352,7 @@
         document.getElementById("education-list").appendChild(clone);
         educationFormCount++;
       }
-
+      //학력 삭제
       function removeEducationForm(button) {
         const entry = button.closest(".education-entry");
         if (entry) {
@@ -344,39 +360,77 @@
           educationFormCount--;
         }
       }
+      // 학력 수정하기
+      function editEducation(button) {
+        const entry = button.closest(".education-entry");
+        const summary = entry.querySelector(".education-summary");
+        const inputs = entry.querySelectorAll("input, select");
+        const formButtons = entry.querySelector(".form-buttons");
 
+        // 요약 카드 숨기기
+        summary.style.display = "none";
 
-      function cancelEducationForm(button) {
-        document.getElementById('education-form').style.display = 'none';
+        // 입력 필드 다시 보이게
+        inputs.forEach(input => input.style.display = "inline-block");
+
+        // 기존 card-buttons 제거
+        const cardButtons = summary.querySelector(".card-buttons");
+        if (cardButtons) {
+          cardButtons.remove();
+        }
+
+        // 저장/삭제 버튼 다시 생성
+        if (formButtons) {
+          formButtons.style.display = "flex";
+          formButtons.style.justifyContent = "flex-end";
+          formButtons.style.gap = "8px";
+        }
       }
 
+      //학력 저장 
       function saveEducation(button) {
-  const entry = button.closest(".education-entry");
-  const form = entry.querySelector(".education-form-fields");
-  const summary = entry.querySelector(".education-summary");
+        const entry = button.closest(".education-entry");
+        const summary = entry.querySelector(".education-summary");
+        const inputs = entry.querySelectorAll("input, select");
+        const formButtons = entry.querySelector(".form-buttons");
 
-  const inputs = form.querySelectorAll("input, select");
-  let values = {};
+        let values = {};
 
-  inputs.forEach(input => {
-    const key = input.placeholder || input.previousElementSibling?.textContent || '선택';
-    values[key] = input.value;
-  });
+        inputs.forEach(input => {
+          if (input.tagName.toLowerCase() === "select") {
+            values["졸업구분"] = input.value;
+          } else {
+            const key = input.placeholder || '선택';
+            values[key] = input.value;
+          }
+        });
 
-  // 보기 카드 형태로 출력될 HTML 구성
-  summary.innerHTML = `
+        // 보기 카드 형태로 출력될 HTML 구성
+        summary.innerHTML = `
     <div class="education-card">
       <h4>${values['학교명'] || ''} (${values['입학년도'] || ''} ~ ${values['졸업년도'] || ''})</h4>
       <p><strong>전공:</strong> ${values['전공'] || ''}</p>
       <p><strong>학점:</strong> ${values['학점'] || ''}</p>
-      <p><strong>졸업 구분:</strong> ${values['select'] || ''}</p>
+      <p><strong>졸업 구분:</strong> ${values['졸업구분'] || ''}
+        <button onclick="editEducation(this)" class="cencle_save_btn" style="float: right; margin-left: 8px;">수정</button>
+        <button onclick="removeEducationForm(this)" class="cencle_save_btn" style="float: right;">삭제</button>
+      </p>
     </div>
   `;
 
-  // 폼 숨기고 출력 내용 보이기
-  form.style.display = "none";
-  summary.style.display = "block";
-}
+        // 입력 요소 숨기기
+        inputs.forEach(input => input.style.display = "none");
+
+        // 버튼 숨기기
+        if (formButtons) {
+          formButtons.style.display = "none";
+        }
+
+        // 요약 카드 보이기
+        summary.style.display = "block";
+      }
+
+
 
 
 
